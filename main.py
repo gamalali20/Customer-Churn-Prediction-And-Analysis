@@ -1,9 +1,11 @@
-import pickle as pkl
+import numpy as np 
 import streamlit as st
 import pandas as pd
+import pickle as pkl
 from collections import Counter
-import numpy as np
-from sklearn.externals import joblib
+from joblib import load
+
+
 
 # Load your models (assuming you're using them later)
 
@@ -15,14 +17,19 @@ Contract_Oe = pkl.load(open('Deployment/Encoding/Contract_oe.pkl', 'rb'))
 scaler = pkl.load(open('Deployment/Scaling/scaler.pkl', 'rb'))
 
 
-models = {
-    'Decision Tree': pkl.load(open('Deployment/Models/Decision Tree.pkl', 'rb')),
-    'Logistic Regression': pkl.load(open('Deployment/Models/lr.pkl', 'rb')),
-    'SVC': pkl.load(open('Deployment/Models/SVC.pkl', 'rb')),
-    'KNN': pkl.load(open('Deployment/Models/KNN.pkl', 'rb')),
-    'Random Forest': pkl.load(open('Deployment/Models/RandomForest.pkl', 'rb')),
-    'Stacking': pkl.load(open('Deployment/Models/Stacking.pkl', 'rb')),
-}
+models = {}
+try:
+    models = {
+        'Decision Tree': pkl.load(open('Deployment/Models/Decision Tree.pkl', 'rb')),
+        'Logistic Regression': pkl.load(open('Deployment/Models/lr.pkl', 'rb')),
+        'SVC': pkl.load(open('Deployment/Models/SVC.pkl', 'rb')),
+        'KNN': pkl.load(open('Deployment/Models/KNN.pkl', 'rb')),
+        'Random Forest': pkl.load(open('Deployment/Models/RandomForest.pkl', 'rb')),
+        'Stacking': pkl.load(open('Deployment/Models/Stacking.pkl', 'rb'))
+    }
+except Exception as e:
+    st.error(f"Error loading models: {str(e)}")
+    st.stop()
 # Set page config
 st.set_page_config(page_title="Customer Churn App", page_icon="📞", layout="wide")
 
